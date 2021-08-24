@@ -39,4 +39,9 @@ public class Link {
         Link otherLink = (Link) object;
         return otherLink.getTitle() == this.getTitle() && otherLink.getUrl() == this.getUrl();
     }
+
+    @Override
+    public String toString(){
+        return String.format("%s : %s", title, url);
+    }
 }

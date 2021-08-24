@@ -2,9 +2,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import crawler.google.GoogleCrawler;
 import crawler.google.GoogleCrawlerParamSet;
 import crawler.google.SimpleGoogleCrawler;
+import crawler.google.pages.GooglePages;
 import crawler.google.pages.SimpleGoogleCrawlerParams;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,20 +34,13 @@ public class MainCrawler {
     }
 
     public static void main(String[] args) {
-        System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
-        WebDriver webDriver = new ChromeDriver();
+        System.setProperty("webdriver.chrome.driver", "drivers/92.0.4515.107/chromedriver");
+        ChromeOptions chromeOptions = new ChromeOptions();
+        chromeOptions.addArguments("--headless");
+        WebDriver webDriver = new ChromeDriver(chromeOptions);
 
         try {
             webDriver.manage().window().maximize();
-            // webDriver.get("https://google.com");
-            // WebElement element = webDriver.findElement(By.cssSelector(".gLFyf.gsfi"));
-
-            // element.sendKeys("Goku drip");
-            // element.submit();
-
-            // List<WebElement> linkContainers = webDriver.findElements(By.className("yuRUbf"));
-
-            // linkContainers.forEach(linkContainer -> printLink(linkContainer));
             GoogleCrawler googleCrawler = new SimpleGoogleCrawler(webDriver);
             List<Integer> pagesToSearch = new ArrayList<>();
             for (int page = 1; page <= 20; page++)
@@ -53,8 +48,10 @@ public class MainCrawler {
 
             GoogleCrawlerParamSet googleCrawlerParamSet = new SimpleGoogleCrawlerParams();
             googleCrawlerParamSet.setParam("pages", pagesToSearch);
-            googleCrawlerParamSet.setInitialSearchString("Goku");
-            googleCrawler.crawl(googleCrawlerParamSet);
+            googleCrawlerParamSet.setParam("waitTimeBetweenRequests", 3000);
+            googleCrawlerParamSet.setInitialSearchString("AOT");
+            GooglePages pages = googleCrawler.crawl(googleCrawlerParamSet);
+            System.out.println(pages.toString());
         } finally {
             webDriver.close();
         }

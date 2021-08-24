@@ -2,8 +2,10 @@ package crawler.google.pages;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import crawler.Link;
 
 public class SimpleGooglePages implements GooglePages {
@@ -11,7 +13,7 @@ public class SimpleGooglePages implements GooglePages {
 
     final List<GooglePage> pages = new ArrayList<>();
 
-    public SimpleGooglePages(){
+    public SimpleGooglePages() {
 
     }
 
@@ -21,7 +23,8 @@ public class SimpleGooglePages implements GooglePages {
 
     @Override
     public boolean add(GooglePage e) {
-        if(searchString != null) e.setSearchString(searchString);
+        if (searchString != null)
+            e.setSearchString(searchString);
         return pages.add(e);
     }
 
@@ -83,5 +86,24 @@ public class SimpleGooglePages implements GooglePages {
     @Override
     public <T> T[] toArray(T[] a) {
         return pages.toArray(a);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+
+        for (GooglePage googlePage : pages) {
+            builder.append(googlePage.toString());
+            builder.append("\n\n*\n\n");
+        }
+        return builder.toString();
+    }
+
+    @Override
+    public Map<Integer, String> getPageNavLinks() {
+        Map<Integer, String> pageNavLinks = new HashMap<>();
+        for (GooglePage page : this.pages)
+            pageNavLinks.putAll(page.getPageNavLinks());
+        return pageNavLinks;
     }
 }
