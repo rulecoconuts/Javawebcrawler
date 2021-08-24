@@ -1,0 +1,5 @@
+target/
+target/classes/MainCrawler.class
+.settings/
+.classpath
+.project
